@@ -1,9 +1,9 @@
-const prompt = require('prompt-sync')({sigint: true});
+const prompt = require("prompt-sync")({ sigint: true });
 
-const hat = '^';
-const hole = 'O';
-const fieldCharacter = '░';
-const pathCharacter = '*';
+const hat = "^";
+const hole = "O";
+const fieldCharacter = "░";
+const pathCharacter = "*";
 
 class Field {
     constructor(fieldArray) {
@@ -12,67 +12,96 @@ class Field {
         this._playerHorizontalPosition = 0;
     }
     winLoseCheck() {
-        if (this._fieldArray[this._playerVerticalPosition][this._playerHorizontalPosition] == hat) {
-            console.log('winner')
-            return true
-        } else if (this._fieldArray[this._playerVerticalPosition][this._playerHorizontalPosition] == hole) {
-            console.log('lose by hole')
-            return true
-        } else if (this._playerVerticalPosition > this._fieldArray.length){
-            console.log('out of bounds')
-            return true
+        if (
+            this._playerVerticalPosition == this._fieldArray.length ||
+            this._playerVerticalPosition < 0 ||
+            this._playerHorizontalPosition < 0 ||
+            this._playerHorizontalPosition > this._fieldArray[0][0].length + 1
+        ) {
+            return "out of bounds";
+        } else if (
+            this._fieldArray[this._playerVerticalPosition][
+                this._playerHorizontalPosition
+            ] == hat
+        ) {
+            return "winner";
+        } else if (
+            this._fieldArray[this._playerVerticalPosition][
+                this._playerHorizontalPosition
+            ] == hole
+        ) {
+            return "lose by hole";
         } else {
-            return false
+            return "";
         }
     }
     print() {
-        for (let lines of this._fieldArray){
-            console.log(lines.join(''))
+        for (let lines of this._fieldArray) {
+            console.log(lines.join(""));
         }
     }
     promptFunction() {
-        const input = prompt('Which way? ');
-        return input
+        const input = prompt("Which way? ");
+        return input;
     }
-    drawPath(vPos, hPos){
-        if (this._fieldArray[vPos][hPos] != "^" && this._fieldArray[vPos][hPos] != hole)
-            this._fieldArray[vPos][hPos] = "*"
+    drawPath(vPos, hPos) {
+        if (this.winLoseCheck() == "") this._fieldArray[vPos][hPos] = "*";
     }
     movePlayer(userInput) {
-        let direction=userInput.toUpperCase();
-        if (direction != 'U' && direction != 'D' && direction != 'L' && direction != 'R'){
-            console.log('Not a proper input')
-        } 
-        if (direction == 'U'){
+        let direction = userInput.toUpperCase();
+        if (
+            direction != "U" &&
+            direction != "D" &&
+            direction != "L" &&
+            direction != "R"
+        ) {
+            console.log("Not a proper input");
+        }
+        if (direction == "U") {
             this._playerVerticalPosition -= 1;
-            this.drawPath(this._playerVerticalPosition, this._playerHorizontalPosition);
+            this.drawPath(
+                this._playerVerticalPosition,
+                this._playerHorizontalPosition
+            );
         }
-        if (direction == 'D'){
+        if (direction == "D") {
             this._playerVerticalPosition += 1;
-            this.drawPath(this._playerVerticalPosition, this._playerHorizontalPosition);
+            this.drawPath(
+                this._playerVerticalPosition,
+                this._playerHorizontalPosition
+            );
         }
-        if (direction == 'L'){
+        if (direction == "L") {
             this._playerHorizontalPosition -= 1;
-            this.drawPath(this._playerVerticalPosition, this._playerHorizontalPosition);
+            this.drawPath(
+                this._playerVerticalPosition,
+                this._playerHorizontalPosition
+            );
         }
-        if (direction == 'R'){
+        if (direction == "R") {
             this._playerHorizontalPosition += 1;
-            this.drawPath(this._playerVerticalPosition, this._playerHorizontalPosition);
+            this.drawPath(
+                this._playerVerticalPosition,
+                this._playerHorizontalPosition
+            );
         }
     }
 }
 
 const myField = new Field([
-  ['*', '░', 'O'],
-  ['░', 'O', '░'],
-  ['░', '^', '░'],
+    ["*", "░", "░"],
+    ["░", "O", "░"],
+    ["░", "^", "░"],
 ]);
+
 do {
-    myField.print()
+    myField.print();
     let userInput = myField.promptFunction();
     myField.movePlayer(userInput);
-    //console.log(`Vertical Position: ${myField._playerVerticalPosition} \nHorizontal Position: ${myField._playerHorizontalPosition}`)
-} while (myField.winLoseCheck() == false)
+    console.log("");
+    console.log(myField.winLoseCheck());
+} while (myField.winLoseCheck() == "");
+
 //this is a test for the functions based on other fields
 //const myField2 = new Field([
 //  ['*', '░', 'O', '░', '░'],
