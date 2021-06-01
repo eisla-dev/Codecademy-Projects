@@ -12,13 +12,14 @@ class Field {
         this._playerHorizontalPosition = 0;
     }
     winLoseCheck() {
-        let hPos;
-        let vPos;
         if (this._fieldArray[this._playerVerticalPosition][this._playerHorizontalPosition] == hat) {
             console.log('winner')
             return true
         } else if (this._fieldArray[this._playerVerticalPosition][this._playerHorizontalPosition] == hole) {
             console.log('lose by hole')
+            return true
+        } else if (this._playerVerticalPosition > this._fieldArray.length){
+            console.log('out of bounds')
             return true
         } else {
             return false
