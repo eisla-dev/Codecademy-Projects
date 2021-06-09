@@ -86,7 +86,23 @@ class Field {
             );
         }
     }
+    static generateField(height, width) {
+        let res = [];
+        let horizontal = [];
+        //create the height of the field
+        for (let n = 0; n < width; n++) {
+            horizontal.push("x");
+        }
+        for (let i = 0; i < height; i++) {
+            res.push(horizontal);
+        }
+        return res;
+        //append random placement of characters
+    }
 }
+
+console.log("This is the static method!");
+console.log(Field.generateField(3, 3));
 
 const myField = new Field([
     ["*", "░", "░"],
