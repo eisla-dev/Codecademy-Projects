@@ -263,6 +263,8 @@ const deleteAllFromDatabase = (modelType) => {
   return model.data;
 }
 
+console.log(getFromDatabaseById('minions',2));
+
 module.exports = {
   createMeeting,
   getAllFromDatabase,
