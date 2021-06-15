@@ -35,4 +35,13 @@ meetingsRouter.post('/', (req, res, next) => {
     res.status(201).send(newMeeting)
 });
 
+meetingsRouter.delete('/', (req, res, next) => {
+    const deleteMeetings = deleteAllFromDatabase('meetings');
+    if (deleteMeetings !== null) {
+        res.status(204).send('No Content');
+    } else {
+        res.status(404).send('Not Found');
+    }
+});
+
 module.exports = meetingsRouter;
